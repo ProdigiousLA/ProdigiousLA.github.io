@@ -11,6 +11,8 @@
 // Put variables in global scope to make them available to the browser console.
 var video = document.querySelector('video');
 var canvas = window.canvas = document.querySelector('canvas');
+
+
 canvas.width = 480;
 canvas.height = 360;
 
@@ -22,6 +24,9 @@ button.onclick = function() {
     drawImage(video, 0, 0, canvas.width, canvas.height);
   loadProdigiousImage();
 };
+
+  
+
 
 var constraints = {
   audio: false,
@@ -41,17 +46,18 @@ function loadProdigiousImage(){
     var img = new Image();
     img.src = 'images/prodigious.png';
     img.onload = function() {
-        canvas.getContext('2d').
-            drawImage(img, 420, 20);
+        canvas.getContext('2d')
+              .drawImage(img, 460, 10);
         img.style.display = 'none';
       };
       
 }
 
-navigator.mediaDevices.getUserMedia(constraints).
-    then(handleSuccess).catch(handleError);
 
-
+navigator.mediaDevices
+    .getUserMedia(constraints)
+    .then(handleSuccess)
+    .catch(handleError);
 
   /** 
    * The event handler for the link's onclick event. We give THIS as a
@@ -62,3 +68,6 @@ navigator.mediaDevices.getUserMedia(constraints).
     this.href = canvas.toDataURL();
     link.download = 'my-prodigious-image.png';
   }, false);
+  console.log('--------------- \nProdigious.com  \n  Thanks for inspecting the code.');
+  console.log('  Take a look at these interesting JS values: \n   >  stream \n   >  canvas.toDataURL()');
+  console.log('--------------- \n')
