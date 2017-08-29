@@ -12,35 +12,26 @@
 var video = document.querySelector('video');
 var canvas = window.canvas = document.querySelector('canvas');
 
-
+// Canvas setup
 canvas.width = 480;
 canvas.height = 360;
 
+// Setup parameters needed for getUserMedia() method
+var constraints = {
+    audio: false,
+    video: true
+  };
+
+// Listener for capturing the video and put it into the canvas element
 var button = document.querySelector('button');
 button.onclick = function() {
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
-  canvas.getContext('2d').
-    drawImage(video, 0, 0, canvas.width, canvas.height);
+  canvas.getContext('2d')
+        .drawImage(video, 0, 0, canvas.width, canvas.height);
+  // Adding the Prodigious touch ;)
   loadProdigiousImage();
 };
-
-  
-
-
-var constraints = {
-  audio: false,
-  video: true
-};
-
-function handleSuccess(stream) {
-  window.stream = stream; // make stream available to browser console
-  video.srcObject = stream;
-}
-
-function handleError(error) {
-  console.log('navigator.getUserMedia error: ', error);
-}
 
 function loadProdigiousImage(){
     var img = new Image();
@@ -54,20 +45,32 @@ function loadProdigiousImage(){
 }
 
 
+// If the user accept the access to the webcam
+function handleSuccess(stream) {
+  window.stream = stream; // make stream available to browser console
+  video.srcObject = stream;
+}
+
+// If you don't want to see your smiling face into the browser :'( 
+function handleError(error) {
+  console.log('navigator.getUserMedia error: ', error);
+}
+
+
+// Browser request to get access to the webcam with getUserMedia
+// We handle 2 promises, the success and the error
 navigator.mediaDevices
     .getUserMedia(constraints)
     .then(handleSuccess)
     .catch(handleError);
 
-  /** 
-   * The event handler for the link's onclick event. We give THIS as a
-   * parameter (=the link element), ID of the canvas and a filename.
-  */
-  document.getElementById('btn-download').addEventListener('click', function() {
-    //   downloadCanvas(this, 'canvas', 'test.png');
+
+// Event handler for the download link. We get the data from the canvas and we download the file as a PNG
+document.getElementById('btn-download').addEventListener('click', function() {
     this.href = canvas.toDataURL();
-    link.download = 'my-prodigious-image.png';
-  }, false);
-  console.log('--------------- \nProdigious.com  \n  Thanks for inspecting the code.');
-  console.log('  Take a look at these interesting JS values: \n   >  stream \n   >  canvas.toDataURL()');
-  console.log('--------------- \n')
+    this.download = 'my-prodigious-image.png';
+}, false);
+
+console.log('--------------- \nProdigious.com  \n  Thanks for inspecting the code.');
+console.log('  Take a look at these interesting JS values: \n   >  stream \n   >  canvas.toDataURL()');
+console.log('--------------- \n')
